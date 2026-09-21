@@ -79,7 +79,8 @@ public class MenuPrincipal extends JFrame {
                             "Sin piloto,",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "pendiente");
+                    VentanaSeleccionarPiloto ventana=new VentanaSeleccionarPiloto(gestorDatos);
+                    ventana.setVisible(true);
                 }
             }
         });
@@ -87,6 +88,13 @@ public class MenuPrincipal extends JFrame {
         btnCrearPiloto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 VentanaCrearPiloto ventana=new VentanaCrearPiloto(gestorDatos);
+                ventana.setVisible(true);
+            }
+        });
+
+        btnTopPuntajes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaTopPuntajes ventana=new VentanaTopPuntajes(gestorDatos);
                 ventana.setVisible(true);
             }
         });

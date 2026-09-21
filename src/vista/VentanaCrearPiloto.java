@@ -52,7 +52,7 @@ public class VentanaCrearPiloto extends JDialog {
 
         JLabel lblNave=new JLabel("Selecciona tu nave:");
         lblNave.setForeground(Color.WHITE);
-        lblNave.setBounds(50, 155, 150, 25);
+        lblNave.setBounds(50, 115, 150, 25);
         add(lblNave);
 
         Nave[] naves=gestorDatos.getNavesDisponibles();
