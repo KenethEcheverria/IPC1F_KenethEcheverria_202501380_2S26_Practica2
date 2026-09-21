@@ -94,7 +94,6 @@ public class VentanaSeleccionarPiloto extends JDialog {
                 }
 
                 Piloto pilotoElegido=gestorDatos.getPilotos()[indice];
-                pilotoElegido.incrementarPartidas();
                 dispose();
                 VentanaJuego ventanaJuego=new VentanaJuego(gestorDatos, pilotoElegido);
                 ventanaJuego.setVisible(true);

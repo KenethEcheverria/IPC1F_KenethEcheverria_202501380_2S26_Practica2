@@ -21,19 +21,21 @@ public class HiloDisparo extends Thread {
            int yProyectil=panel.getJugadorY()+panel.getJugadorAlto()/2;
 
            HiloProyectil proyectil=new HiloProyectil(xProyectil, yProyectil, panel);
-           panel.agregarProyectil(proyectil);
-           proyectil.start();
+           if (panel.agregarProyectil(proyectil)) {
+               proyectil.start();
+           }
 
             try {
                 Thread.sleep(tiempoRecargaMs);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }
 
     public void detener() {
         activo=false;
+        interrupt();
     }
 }
 

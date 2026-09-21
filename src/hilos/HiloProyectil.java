@@ -6,7 +6,7 @@ public class HiloProyectil extends Thread {
 
     private int x;
     private int y;
-    private boolean activo;
+    private volatile boolean activo;
     private GamePanel panel;
 
 
@@ -25,7 +25,7 @@ public class HiloProyectil extends Thread {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
         panel.eliminarProyectil(this);
@@ -55,6 +55,7 @@ public class HiloProyectil extends Thread {
 
     public void detener() {
         activo=false;
+        interrupt();
     }
 
     public int getX() {return x;}

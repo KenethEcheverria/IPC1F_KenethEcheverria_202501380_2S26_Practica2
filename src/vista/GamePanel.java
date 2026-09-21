@@ -38,9 +38,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private int puntaje;
 
-    private boolean jugando;
+    private volatile boolean jugando;
 
-    private boolean ralentizado;
+    private volatile boolean ralentizado;
 
     public HiloEnemigo[] enemigos;
     public HiloObjetoEspecial[] objetosEspeciales;
@@ -55,6 +55,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private static final int MAX_PROYECTILES=20;
 
     private Thread hiloJuego;
+
+    private HiloDisparo hiloDisparo;
 
     private int contadorGeneracion;
 
@@ -90,9 +92,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         totalObjetos=0;
         totalProyectiles=0;
 
-        HiloDisparo hiloDisparo=new HiloDisparo(this,
+        hiloDisparo=new HiloDisparo(this,
                 pilotoActual.getNave().getTiempoDisparoMs());
         hiloDisparo.start();
+    }
+
+    public synchronized void iniciarJuego() {
+        if (hiloJuego==null || !hiloJuego.isAlive()) {
+            hiloJuego=new Thread(this);
+            hiloJuego.start();
+        }
     }
 
     @Override
@@ -112,10 +121,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 try {
                     Thread.sleep(esperar/1000000);
                 } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                    break;
                 }
             }
         }
+        hiloJuego=null;
     }
 
     private void actualizar() {
@@ -212,8 +222,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    public void terminarJuego() {
-        jugando=false;
+    public synchronized void terminarJuego() {
+        if (!jugando) {
+            return;
+        }
+
+        detenerJuego();
+
         String fecha= LocalDate.now().toString();
         Partida partida=new Partida(
                 pilotoActual.getNombre(),
@@ -221,7 +236,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 puntaje,
                 fecha
         );
+
         gestorDatos.agregarPartida(partida);
+        pilotoActual.incrementarPartidas();
 
         JOptionPane.showMessageDialog(this,
                 "Juego terminado\nPuntaje final: "+puntaje,
@@ -253,11 +270,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         totalEnemigos=0;
     }
 
-    public synchronized void agregarProyectil(HiloProyectil p) {
+    public synchronized boolean agregarProyectil(HiloProyectil p) {
         if (totalProyectiles<MAX_PROYECTILES) {
             proyectiles[totalProyectiles]=p;
             totalProyectiles++;
+            return true;
         }
+        return false;
     }
 
     public synchronized void eliminarProyectil(HiloProyectil p) {
@@ -272,6 +291,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
         }
     }
+
+    public synchronized void detenerJuego() {
+        jugando=false;
+        if (hiloDisparo!=null) {
+            hiloDisparo.detener();
+        }
+
+        for (int i=0; i<totalEnemigos; i++) {
+            if (enemigos[i]!=null) {
+                enemigos[i].detener();
+            }
+        }
+
+        for (int i=0; i<totalObjetos; i++) {
+            if (objetosEspeciales[i]!=null) {
+                objetosEspeciales[i].detener();
+            }
+        }
+
+        for (int i=0; i<totalProyectiles; i++) {
+            if (proyectiles[i]!=null) {
+                proyectiles[i].detener();
+            }
+        }
+
+        if (hiloJuego!=null && hiloJuego!=Thread.currentThread()) {
+            hiloJuego.interrupt();
+        }
+    }
+
 
     // Getters
     public int getJugadorX(){return jugadorX;}

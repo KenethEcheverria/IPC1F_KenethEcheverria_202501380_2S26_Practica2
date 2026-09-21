@@ -7,7 +7,7 @@ public class HiloObjetoEspecial extends Thread {
     private int x;
     private int y;
     private int tipo;
-    private boolean vivo;
+    private volatile boolean vivo;
     private GamePanel panel;
 
     public HiloObjetoEspecial(int x, int y, int tipo, GamePanel panel) {
@@ -25,13 +25,14 @@ public class HiloObjetoEspecial extends Thread {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }
 
     public void detener() {
         vivo=false;
+        interrupt();
     }
 
     public int getX() {return x;}

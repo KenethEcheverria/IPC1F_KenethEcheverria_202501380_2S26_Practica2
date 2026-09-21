@@ -6,7 +6,7 @@ public class HiloEnemigo extends Thread {
     private int x;
     private int y;
     private int velocidad;
-    private boolean vivo;
+    private volatile boolean vivo;
     private GamePanel panel;
 
     public HiloEnemigo(int x, int y, GamePanel panel) {
@@ -24,13 +24,14 @@ public class HiloEnemigo extends Thread {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }
 
     public void detener() {
         vivo=false;
+        interrupt();
     }
 
     public int getX() {return x;}
