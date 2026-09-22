@@ -244,17 +244,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 fecha
         );
 
-        boolean guardada=gestorDatos.agregarPartida(partida);
+        boolean guardada = gestorDatos.agregarPartida(partida);
         if (guardada) {
             pilotoActual.incrementarPartidas();
         }
 
-        JOptionPane.showMessageDialog(this,
-                "Juego terminado\nPuntaje final: " + puntaje,
-                "Fin de partida",
-                JOptionPane.INFORMATION_MESSAGE);
+        final int puntajeFinal = puntaje;
 
-        SwingUtilities.getWindowAncestor(this).dispose();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                JOptionPane.showMessageDialog(GamePanel.this,
+                        "Juego terminado\nPuntaje final: " + puntajeFinal,
+                        "Fin de partida",
+                        JOptionPane.INFORMATION_MESSAGE);
+                Window ventana = SwingUtilities.getWindowAncestor(GamePanel.this);
+                if (ventana != null) {
+                    ventana.dispose();
+                }
+            }
+        });
     }
 
     public synchronized void sumarPuntos(int puntos) {
