@@ -15,13 +15,15 @@ import java.io.PrintWriter;
 
 public class GeneradorReporte {
 
-    public static void exportar(GestorDatos gestorDatos) {
+    public static boolean exportar(GestorDatos gestorDatos) {
         try {
             String rutaImagen="reporte_grafica.png";
             generarGrafica(gestorDatos, rutaImagen);
             generarHTML(gestorDatos, rutaImagen);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -67,7 +69,7 @@ public class GeneradorReporte {
         writer.println(" h1 { color: #00c8ff; text-align: center; }");
         writer.println(" h2 { color: #ffd700; margin-top: 30px; }");
         writer.println(" table { width: 100%; border-collapse: collapse; margin-top: 10px; }");
-        writer.println(" th { background: #003366; padding: 10 px; text-align: left; }");
+        writer.println(" th { background: #003366; padding: 10px; text-align: left; }");
         writer.println(" td { padding: 8px 10px; border-bottom: 1px solid #333; }");
         writer.println(" tr:nth-child(even) { background: #111133; }");
         writer.println(" .grafica { text-align: center; margin-top: 30px; }");

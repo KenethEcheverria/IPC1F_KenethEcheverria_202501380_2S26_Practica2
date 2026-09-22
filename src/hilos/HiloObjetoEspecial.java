@@ -1,20 +1,16 @@
 package hilos;
 
-import vista.GamePanel;
-
 public class HiloObjetoEspecial extends Thread {
 
-    private int x;
-    private int y;
+    private volatile int x;
+    private volatile int y;
     private int tipo;
     private volatile boolean vivo;
-    private GamePanel panel;
 
-    public HiloObjetoEspecial(int x, int y, int tipo, GamePanel panel) {
+    public HiloObjetoEspecial(int x, int y, int tipo) {
         this.x=x;
         this.y=y;
         this.tipo=tipo;
-        this.panel=panel;
         this.vivo=true;
     }
 

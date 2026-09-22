@@ -153,7 +153,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private synchronized void generarEnemigo() {
         if (totalEnemigos < MAX_ENEMIGOS) {
             int yAleatorio = (int) (Math.random() * (ALTO - 30));
-            HiloEnemigo enemigo = new HiloEnemigo(ANCHO, yAleatorio, this);
+            HiloEnemigo enemigo = new HiloEnemigo(ANCHO, yAleatorio);
             enemigos[totalEnemigos] = enemigo;
             totalEnemigos++;
             enemigo.start();
@@ -164,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (totalObjetos < MAX_OBJETOS) {
             int tipo = (int) (Math.random() * 3);
             int yAleatorio = (int) (Math.random() * (ALTO - 30));
-            HiloObjetoEspecial objeto = new HiloObjetoEspecial(ANCHO, yAleatorio, tipo, this);
+            HiloObjetoEspecial objeto = new HiloObjetoEspecial(ANCHO, yAleatorio, tipo);
             objetosEspeciales[totalObjetos] = objeto;
             totalObjetos++;
             objeto.start();
