@@ -72,11 +72,13 @@ public class GestorDatos {
     }
 
     // Guarda una partida
-     public void agregarPartida(Partida p) {
+     public boolean agregarPartida(Partida p) {
         if (totalPartidas<MAX_PARTIDAS) {
             partidas[totalPartidas]=p;
             totalPartidas++;
+            return true;
         }
+        return false;
      }
 
      public Partida[] getPartidas() {

@@ -244,8 +244,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 fecha
         );
 
-        gestorDatos.agregarPartida(partida);
-        pilotoActual.incrementarPartidas();
+        boolean guardada=gestorDatos.agregarPartida(partida);
+        if (guardada) {
+            pilotoActual.incrementarPartidas();
+        }
 
         JOptionPane.showMessageDialog(this,
                 "Juego terminado\nPuntaje final: " + puntaje,
