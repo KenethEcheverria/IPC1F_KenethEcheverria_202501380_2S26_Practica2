@@ -18,18 +18,18 @@ import java.time.LocalDate;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-    public static final int ANCHO=800;
-    public static final int ALTO=500;
+    public static final int ANCHO = 800;
+    public static final int ALTO = 500;
 
-    private static final int FPS=60;
+    private static final int FPS = 60;
 
     private GestorDatos gestorDatos;
     private Piloto pilotoActual;
 
     private int jugadorX;
     private int jugadorY;
-    private int jugadorAncho=60;
-    private int jugadorAlto=30;
+    private int jugadorAncho = 60;
+    private int jugadorAlto = 30;
 
     private int velocidadJugador;
 
@@ -50,9 +50,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public int totalObjetos;
     public int totalProyectiles;
 
-    private static final int MAX_ENEMIGOS=30;
-    private static final int MAX_OBJETOS=10;
-    private static final int MAX_PROYECTILES=20;
+    private static final int MAX_ENEMIGOS = 30;
+    private static final int MAX_OBJETOS = 10;
+    private static final int MAX_PROYECTILES = 20;
 
     private Thread hiloJuego;
 
@@ -61,9 +61,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private int contadorGeneracion;
 
     public GamePanel(GestorDatos gestorDatos, Piloto pilotoActual) {
-        this.gestorDatos=gestorDatos;
-        this.pilotoActual=pilotoActual;
-        this.velocidadJugador=pilotoActual.getNave().getVelocidadMovimiento();
+        this.gestorDatos = gestorDatos;
+        this.pilotoActual = pilotoActual;
+        this.velocidadJugador = pilotoActual.getNave().getVelocidadMovimiento();
         configurarPanel();
         inicializarJuego();
     }
@@ -76,96 +76,96 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void inicializarJuego() {
-        jugadorX=80;
-        jugadorY=ALTO/2-jugadorAlto/2;
-        puntaje=0;
-        jugando=true;
-        ralentizado=false;
-        contadorGeneracion=0;
-        arribaPresionada=false;
-        abajoPresionada=false;
+        jugadorX = 80;
+        jugadorY = ALTO / 2 - jugadorAlto / 2;
+        puntaje = 0;
+        jugando = true;
+        ralentizado = false;
+        contadorGeneracion = 0;
+        arribaPresionada = false;
+        abajoPresionada = false;
 
-        enemigos=new HiloEnemigo[MAX_ENEMIGOS];
-        objetosEspeciales=new HiloObjetoEspecial[MAX_OBJETOS];
-        proyectiles=new HiloProyectil[MAX_PROYECTILES];
-        totalEnemigos=0;
-        totalObjetos=0;
-        totalProyectiles=0;
+        enemigos = new HiloEnemigo[MAX_ENEMIGOS];
+        objetosEspeciales = new HiloObjetoEspecial[MAX_OBJETOS];
+        proyectiles = new HiloProyectil[MAX_PROYECTILES];
+        totalEnemigos = 0;
+        totalObjetos = 0;
+        totalProyectiles = 0;
 
-        hiloDisparo=new HiloDisparo(this,
+        hiloDisparo = new HiloDisparo(this,
                 pilotoActual.getNave().getTiempoDisparoMs());
         hiloDisparo.start();
     }
 
     public synchronized void iniciarJuego() {
-        if (hiloJuego==null || !hiloJuego.isAlive()) {
-            hiloJuego=new Thread(this);
+        if (hiloJuego == null || !hiloJuego.isAlive()) {
+            hiloJuego = new Thread(this);
             hiloJuego.start();
         }
     }
 
     @Override
     public void run() {
-        long tiempoPorFrame=1000000000/FPS;
+        long tiempoPorFrame = 1000000000 / FPS;
 
         while (jugando) {
-            long ahora=System.nanoTime();
+            long ahora = System.nanoTime();
 
             actualizar();
             repaint();
 
-            long transcurrido=System.nanoTime()-ahora;
-            long esperar=tiempoPorFrame-transcurrido;
+            long transcurrido = System.nanoTime() - ahora;
+            long esperar = tiempoPorFrame - transcurrido;
 
-            if (esperar>0) {
+            if (esperar > 0) {
                 try {
-                    Thread.sleep(esperar/1000000);
+                    Thread.sleep(esperar / 1000000);
                 } catch (InterruptedException ex) {
                     break;
                 }
             }
         }
-        hiloJuego=null;
+        hiloJuego = null;
     }
 
     private void actualizar() {
-        int velocidadReal=ralentizado?velocidadJugador/2:velocidadJugador;
-        if (arribaPresionada&&jugadorY>0) {
+        int velocidadReal = ralentizado ? velocidadJugador / 2 : velocidadJugador;
+        if (arribaPresionada && jugadorY > 0) {
             jugadorY -= velocidadReal;
         }
-        if (abajoPresionada&&jugadorY<ALTO-jugadorAlto) {
-            jugadorY+=velocidadReal;
+        if (abajoPresionada && jugadorY < ALTO - jugadorAlto) {
+            jugadorY += velocidadReal;
         }
 
         contadorGeneracion++;
-        if (contadorGeneracion%90==0) {
+        if (contadorGeneracion % 90 == 0) {
             generarEnemigo();
         }
 
-        if (contadorGeneracion%180==0) {
+        if (contadorGeneracion % 180 == 0) {
             generarObjetoEspecial();
         }
 
         GestorColisiones.verificar(this, jugadorX, jugadorY,
-                jugadorAncho, jugadorAlto, pilotoActual);
+                jugadorAncho, jugadorAlto);
     }
 
-    private void generarEnemigo() {
-        if (totalEnemigos<MAX_ENEMIGOS) {
-            int yAleatorio=(int)(Math.random()*(ALTO-30));
-            HiloEnemigo enemigo=new HiloEnemigo(ANCHO, yAleatorio, this);
-            enemigos[totalEnemigos]=enemigo;
+    private synchronized void generarEnemigo() {
+        if (totalEnemigos < MAX_ENEMIGOS) {
+            int yAleatorio = (int) (Math.random() * (ALTO - 30));
+            HiloEnemigo enemigo = new HiloEnemigo(ANCHO, yAleatorio, this);
+            enemigos[totalEnemigos] = enemigo;
             totalEnemigos++;
             enemigo.start();
         }
     }
 
-    private void generarObjetoEspecial() {
-        if (totalObjetos<MAX_OBJETOS) {
-            int tipo=(int)(Math.random()*3);
-            int yAleatorio=(int)(Math.random()*(ALTO-30));
-            HiloObjetoEspecial objeto=new HiloObjetoEspecial(ANCHO, yAleatorio, tipo, this);
-            objetosEspeciales[totalObjetos]=objeto;
+    private synchronized void generarObjetoEspecial() {
+        if (totalObjetos < MAX_OBJETOS) {
+            int tipo = (int) (Math.random() * 3);
+            int yAleatorio = (int) (Math.random() * (ALTO - 30));
+            HiloObjetoEspecial objeto = new HiloObjetoEspecial(ANCHO, yAleatorio, tipo, this);
+            objetosEspeciales[totalObjetos] = objeto;
             totalObjetos++;
             objeto.start();
         }
@@ -176,49 +176,56 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
 
         g.setColor(new Color(0, 180, 255));
-        int[] xPuntos={jugadorX, jugadorX+jugadorAncho, jugadorX};
-        int[] yPuntos={jugadorY, jugadorY+jugadorAlto/2, jugadorY+jugadorAlto};
+        int[] xPuntos = {jugadorX, jugadorX + jugadorAncho, jugadorX};
+        int[] yPuntos = {jugadorY, jugadorY + jugadorAlto / 2, jugadorY + jugadorAlto};
         g.fillPolygon(xPuntos, yPuntos, 3);
 
-        g.setColor(new Color(220, 50, 50));
-        for (int i=0; i<totalEnemigos; i++) {
-            if (enemigos[i]!=null) {
-                g.fillRect(enemigos[i].getX(), enemigos[i].getY(), 40, 25);
-            }
-        }
+        synchronized (this) {
+            // Dibujar enemigos
+            g.setColor(new Color(220, 50, 50));
 
-        for (int i=0; i<totalObjetos; i++) {
-            if (objetosEspeciales[i]!=null) {
-                if (objetosEspeciales[i].getTipo()==0) {
-                    g.setColor(new Color(255, 215, 0)); // Snitch: dorado
-                } else if (objetosEspeciales[i].getTipo()==1) {
-                    g.setColor(new Color(150, 150, 150)); // Bludger: gris
-                } else {
-                    g.setColor(new Color(255, 140, 0)); // Quaffle: naranja
+            for (int i = 0; i < totalEnemigos; i++) {
+                if (enemigos[i] != null) {
+                    g.fillRect(enemigos[i].getX(), enemigos[i].getY(), 40, 25);
                 }
-                g.fillOval(objetosEspeciales[i].getX(), objetosEspeciales[i].getY(), 25, 25);
             }
-        }
 
-        g.setColor(new Color(255, 255, 0));
-        for (int i=0; i<totalProyectiles; i++) {
-            if (proyectiles[i]!=null) {
-                g.fillRect(proyectiles[i].getX(), proyectiles[i].getY(), 12, 4);
+            // Dibujar objetos especiales
+            for (int i = 0; i < totalEnemigos; i++) {
+                if (objetosEspeciales[i] != null) {
+                    if (objetosEspeciales[i].getTipo() == 0) {
+                        g.setColor(new Color(255, 215, 0)); // Snitch: dorado
+                    } else if (objetosEspeciales[i].getTipo() == 1) {
+                        g.setColor(new Color(150, 150, 150)); // Bludger: gris
+                    } else {
+                        g.setColor(new Color(255, 140, 0)); // Quaffle: naranja
+                    }
+
+                    g.fillOval(objetosEspeciales[i].getX(), objetosEspeciales[i].getY(), 25, 25);
+                }
+            }
+
+            // Dibujar proyectiles
+            g.setColor(new Color(255, 255, 0));
+            for (int i = 0; i < totalProyectiles; i++) {
+                if (proyectiles[i] != null) {
+                    g.fillRect(proyectiles[i].getX(), proyectiles[i].getY(), 12, 4);
+                }
             }
         }
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 16));
-        g.drawString("Puntaje: "+puntaje,15,25);
+        g.drawString("Puntaje: " + puntaje, 15, 25);
 
         g.setFont(new Font("Arial", Font.PLAIN, 13));
-        g.drawString(pilotoActual.getNombre()+" | "+pilotoActual.getNave().getTipo(),
-                ANCHO-230, 25);
+        g.drawString(pilotoActual.getNombre() + " | " + pilotoActual.getNave().getTipo(),
+                ANCHO - 230, 25);
 
         if (ralentizado) {
             g.setColor(new Color(255, 80, 80));
             g.setFont(new Font("Arial", Font.BOLD, 14));
-            g.drawString("RALENTIZADO", ANCHO/2-50, 50);
+            g.drawString("RALENTIZADO", ANCHO / 2 - 50, 50);
         }
     }
 
@@ -229,8 +236,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         detenerJuego();
 
-        String fecha= LocalDate.now().toString();
-        Partida partida=new Partida(
+        String fecha = LocalDate.now().toString();
+        Partida partida = new Partida(
                 pilotoActual.getNombre(),
                 pilotoActual.getNave().getTipo(),
                 puntaje,
@@ -241,9 +248,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         pilotoActual.incrementarPartidas();
 
         JOptionPane.showMessageDialog(this,
-                "Juego terminado\nPuntaje final: "+puntaje,
+                "Juego terminado\nPuntaje final: " + puntaje,
                 "Fin de partida",
-                        JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.INFORMATION_MESSAGE);
 
         SwingUtilities.getWindowAncestor(this).dispose();
     }
@@ -253,26 +260,62 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     public void activarRalentizacion() {
-        ralentizado=true;
+        ralentizado = true;
     }
 
     public void desactivarRalentizacion() {
-        ralentizado=false;
+        ralentizado = false;
+    }
+
+    public synchronized boolean eliminarEnemigo(HiloEnemigo enemigo) {
+        for (int i = 0; i < totalEnemigos; i++) {
+            if (enemigos[i] == enemigo) {
+                enemigo.detener();
+                for (int j = i; j < totalEnemigos - 1; j++) {
+                    enemigos[j] = enemigos[j + 1];
+                }
+
+                enemigos[totalEnemigos - 1] = null;
+                totalEnemigos--;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public synchronized boolean eliminarObjetoEspecial(HiloObjetoEspecial objeto) {
+        for (int i = 0; i < totalObjetos; i++) {
+            if (objetosEspeciales[i] == objeto) {
+                objeto.detener();
+                for (int j = i; j < totalObjetos - 1; j++) {
+                    objetosEspeciales[j] = objetosEspeciales[j + 1];
+                }
+
+                objetosEspeciales[totalObjetos - 1] = null;
+                totalObjetos--;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public synchronized void destruirTodosLosEnemigos() {
-        for (int i=0; i<totalEnemigos; i++) {
-            if (enemigos[i]!=null) {
+        for (int i = 0; i < totalEnemigos; i++) {
+            if (enemigos[i] != null) {
                 enemigos[i].detener();
-                enemigos[i]=null;
+                enemigos[i] = null;
             }
         }
-        totalEnemigos=0;
+        totalEnemigos = 0;
     }
 
     public synchronized boolean agregarProyectil(HiloProyectil p) {
-        if (totalProyectiles<MAX_PROYECTILES) {
-            proyectiles[totalProyectiles]=p;
+        if (totalProyectiles < MAX_PROYECTILES) {
+            proyectiles[totalProyectiles] = p;
             totalProyectiles++;
             return true;
         }
@@ -280,12 +323,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     public synchronized void eliminarProyectil(HiloProyectil p) {
-        for (int i=0; i<totalProyectiles; i++) {
-            if (proyectiles[i]==p) {
-                for (int j=i; j<totalProyectiles-1; j++) {
-                    proyectiles[j]=proyectiles[j+1];
+        for (int i = 0; i < totalProyectiles; i++) {
+            if (proyectiles[i] == p) {
+                for (int j = i; j < totalProyectiles - 1; j++) {
+                    proyectiles[j] = proyectiles[j + 1];
                 }
-                proyectiles[totalProyectiles-1]=null;
+                proyectiles[totalProyectiles - 1] = null;
                 totalProyectiles--;
                 break;
             }
@@ -293,40 +336,51 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     public synchronized void detenerJuego() {
-        jugando=false;
-        if (hiloDisparo!=null) {
+        jugando = false;
+        if (hiloDisparo != null) {
             hiloDisparo.detener();
         }
 
-        for (int i=0; i<totalEnemigos; i++) {
-            if (enemigos[i]!=null) {
+        for (int i = 0; i < totalEnemigos; i++) {
+            if (enemigos[i] != null) {
                 enemigos[i].detener();
             }
         }
 
-        for (int i=0; i<totalObjetos; i++) {
-            if (objetosEspeciales[i]!=null) {
+        for (int i = 0; i < totalObjetos; i++) {
+            if (objetosEspeciales[i] != null) {
                 objetosEspeciales[i].detener();
             }
         }
 
-        for (int i=0; i<totalProyectiles; i++) {
-            if (proyectiles[i]!=null) {
+        for (int i = 0; i < totalProyectiles; i++) {
+            if (proyectiles[i] != null) {
                 proyectiles[i].detener();
             }
         }
 
-        if (hiloJuego!=null && hiloJuego!=Thread.currentThread()) {
+        if (hiloJuego != null && hiloJuego != Thread.currentThread()) {
             hiloJuego.interrupt();
         }
     }
 
 
     // Getters
-    public int getJugadorX(){return jugadorX;}
-    public int getJugadorY(){return jugadorY;}
-    public int getJugadorAncho(){return jugadorAncho;}
-    public int getJugadorAlto(){return jugadorAlto;}
+    public int getJugadorX() {
+        return jugadorX;
+    }
+
+    public int getJugadorY() {
+        return jugadorY;
+    }
+
+    public int getJugadorAncho() {
+        return jugadorAncho;
+    }
+
+    public int getJugadorAlto() {
+        return jugadorAlto;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -349,7 +403,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e){
+    public void keyTyped(KeyEvent e) {
         // No lo necesito, pero KeyListener me hace implementarlo
     }
 }

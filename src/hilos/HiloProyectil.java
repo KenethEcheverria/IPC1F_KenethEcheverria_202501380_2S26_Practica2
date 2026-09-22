@@ -32,23 +32,23 @@ public class HiloProyectil extends Thread {
     }
 
     private void revisarColisionConEnemigos() {
-        for (int i = panel.totalEnemigos - 1; i >= 0; i--) {
-            if (panel.enemigos[i] == null) continue;
-
-            HiloEnemigo enemigo = panel.enemigos[i];
-            boolean chocaEnX = x >= enemigo.getX() && x <= enemigo.getX() + 40;
-            boolean chocaEnY = y >= enemigo.getY() && y <= enemigo.getY() + 25;
-
-            if (chocaEnX && chocaEnY) {
-                enemigo.detener();
-                for (int j = i; j < panel.totalEnemigos - 1; j++) {
-                    panel.enemigos[j] = panel.enemigos[j + 1];
+        synchronized (panel) {
+            for (int i = panel.totalEnemigos - 1; i >= 0; i--) {
+                if (panel.enemigos[i] == null) {
+                    continue;
                 }
-                panel.enemigos[panel.totalEnemigos - 1] = null;
-                panel.totalEnemigos--;
-                panel.sumarPuntos(20);
-                activo = false;
-                break;
+
+                HiloEnemigo enemigo = panel.enemigos[i];
+                boolean chocaEnX = x >= enemigo.getX() && x <= enemigo.getX() + 40;
+                boolean chocaEnY = y >= enemigo.getY() && y <= enemigo.getY() + 25;
+
+                if (chocaEnX && chocaEnY) {
+                    if (panel.eliminarEnemigo(enemigo)) {
+                        panel.sumarPuntos(20);
+                        activo = false;
+                        break;
+                    }
+                }
             }
         }
     }
