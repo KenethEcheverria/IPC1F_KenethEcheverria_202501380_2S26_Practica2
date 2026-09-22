@@ -191,7 +191,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
 
             // Dibujar objetos especiales
-            for (int i = 0; i < totalEnemigos; i++) {
+            for (int i = 0; i < totalObjetos; i++) {
                 if (objetosEspeciales[i] != null) {
                     if (objetosEspeciales[i].getTipo() == 0) {
                         g.setColor(new Color(255, 215, 0)); // Snitch: dorado

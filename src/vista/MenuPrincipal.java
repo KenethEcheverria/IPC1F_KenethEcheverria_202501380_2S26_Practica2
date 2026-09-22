@@ -76,7 +76,7 @@ public class MenuPrincipal extends JFrame {
                 if (gestorDatos.getTotalPilotos()==0) {
                     JOptionPane.showMessageDialog(null,
                             "Debes crear un piloto antes de jugar.",
-                            "Sin piloto,",
+                            "Sin piloto",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
                     VentanaSeleccionarPiloto ventana=new VentanaSeleccionarPiloto(gestorDatos);

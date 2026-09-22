@@ -4,8 +4,8 @@ import vista.GamePanel;
 
 public class HiloProyectil extends Thread {
 
-    private int x;
-    private int y;
+    private volatile int x;
+    private volatile int y;
     private volatile boolean activo;
     private GamePanel panel;
 

@@ -4,7 +4,7 @@ import vista.GamePanel;
 
 public class HiloDisparo extends Thread {
 
-    private boolean activo;
+    private volatile boolean activo;
     private GamePanel panel;
     private int tiempoRecargaMs;
 
