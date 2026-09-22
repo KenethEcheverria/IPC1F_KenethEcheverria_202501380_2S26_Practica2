@@ -7,6 +7,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import java.awt.Desktop;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,8 +19,12 @@ public class GeneradorReporte {
     public static boolean exportar(GestorDatos gestorDatos) {
         try {
             String rutaImagen="reporte_grafica.png";
+            String rutaHTML="reporte_quetzal.html";
             generarGrafica(gestorDatos, rutaImagen);
             generarHTML(gestorDatos, rutaImagen);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(new File(rutaHTML).toURI());
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
