@@ -3,6 +3,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
+reporte_grafica.png
+reporte_quetzal.html
 
 ### Eclipse ###
 .apt_generated
