@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private int jugadorAlto = 30;
 
     private int velocidadJugador;
+    private int velocidadEnemigos;
+    private int intervaloEnemigos;
 
     private boolean arribaPresionada;
     private boolean abajoPresionada;
@@ -64,8 +66,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.gestorDatos = gestorDatos;
         this.pilotoActual = pilotoActual;
         this.velocidadJugador = pilotoActual.getNave().getVelocidadMovimiento();
+        configurarDificultad();
         configurarPanel();
         inicializarJuego();
+    }
+
+    private void configurarDificultad() {
+        String dificultad=pilotoActual.getNave().getDificultad();
+        if (dificultad.equalsIgnoreCase("Facil")) {
+          velocidadEnemigos=3;
+          intervaloEnemigos=120;
+        } else if (dificultad.equalsIgnoreCase("Normal")) {
+            velocidadEnemigos=4;
+            intervaloEnemigos=90;
+        } else if (dificultad.equalsIgnoreCase("Dificil")) {
+            velocidadEnemigos=5;
+            intervaloEnemigos=60;
+        }
     }
 
     private void configurarPanel() {
@@ -138,7 +155,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
 
         contadorGeneracion++;
-        if (contadorGeneracion % 90 == 0) {
+        if (contadorGeneracion % intervaloEnemigos == 0) {
             generarEnemigo();
         }
 
@@ -153,7 +170,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private synchronized void generarEnemigo() {
         if (totalEnemigos < MAX_ENEMIGOS) {
             int yAleatorio = (int) (Math.random() * (ALTO - 30));
-            HiloEnemigo enemigo = new HiloEnemigo(ANCHO, yAleatorio);
+            HiloEnemigo enemigo = new HiloEnemigo(ANCHO, yAleatorio, velocidadEnemigos);
             enemigos[totalEnemigos] = enemigo;
             totalEnemigos++;
             enemigo.start();

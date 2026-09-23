@@ -6,11 +6,11 @@ public class HiloEnemigo extends Thread {
     private int velocidad;
     private volatile boolean vivo;
 
-    public HiloEnemigo(int x, int y) {
+    public HiloEnemigo(int x, int y, int velocidad) {
         this.x=x;
         this.y=y;
         this.vivo=true;
-        this.velocidad=3;
+        this.velocidad=velocidad;
     }
 
     @Override
