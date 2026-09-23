@@ -1,0 +1,3 @@
+PruebaFacil;Explorador
+pruebaNormal;Caza Estelar
+pruebaDificil;Acorazado
