@@ -2,8 +2,8 @@
 
 ## 1. Información general
 
-**Laboratorio de Introducción a la Programación y Computación 1** 
-**Práctica 2** 
+**Laboratorio de Introducción a la Programación y Computación 1**
+**Práctica 2**
 
 ---
 
@@ -450,7 +450,21 @@ La interfaz gráfica de fin de partida se ejecuta mediante `SwingUtilities.invok
 
 ## 18. Ejecución
 
-Para ejecutar el proyecto:
+Para ejecutar el programa:
+
+1. Tener instalado Java en el equipo.
+2. Descargar o clonar el repositorio.
+3. Abrir una terminal en la carpeta raíz del proyecto.
+4. Ejecutar el siguiente comando:
+
+```bash
+java -jar dist/Practica2.jar
+```
+
+5. Se mostrará el menú principal de Quetzal Space Defender.
+
+El JAR fue generado incluyendo las dependencias necesarias para la ejecución del programa.
+
 
 
 ---
