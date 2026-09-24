@@ -96,6 +96,14 @@ La dificultad también modifica la velocidad y frecuencia de generación de enem
 ├── docs/
 │   ├── diagramas/
 │   │   └── Diagrama_Flujo.png
+│   ├── imagenes/
+│   │   ├── menu_principal.png
+│   │   ├── crear_piloto.png
+│   │   ├── seleccionar_piloto.png
+│   │   ├── fin_partida.png
+│   │   ├── top_historial.png
+│   │   └── reporte_exportado.png
+│   ├── Diagrama_Flujo.md
 │   ├── Manual_Tecnico.md
 │   └── Manual_Usuario.md
 │
@@ -104,6 +112,7 @@ La dificultad también modifica la velocidad y frecuencia de generación de enem
 │   └── jfreechart-1.0.19.jar
 │
 ├── src/
+│   ├── META-INF/
 │   ├── hilos/
 │   ├── logica/
 │   ├── modelo/
@@ -192,8 +201,6 @@ El HTML se abre automáticamente en el navegador predeterminado.
 
 [Ver Manual de Usuario](docs/Manual_Usuario.md)
 
----
+### Diagrama de Flujo
 
-## Diagrama de Flujo
-
-![Diagrama de Flujo](docs/diagramas/Diagrama_Flujo.png)
+[Ver Diagrama de Flujo](docs/Diagrama_Flujo.md)
