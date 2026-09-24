@@ -70,24 +70,22 @@ Contiene las interfaces gráficas del sistema.
 
 ```text
 src/
+├── META-INF/
+│   └── MANIFEST.MF
 ├── hilos/
 │   ├── HiloDisparo.java
 │   ├── HiloEnemigo.java
 │   ├── HiloObjetoEspecial.java
 │   └── HiloProyectil.java
-│
 ├── logica/
 │   ├── GestorColisiones.java
 │   └── GestorDatos.java
-│
 ├── modelo/
 │   ├── Nave.java
 │   ├── Partida.java
 │   └── Piloto.java
-│
 ├── reportes/
 │   └── GeneradorReporte.java
-│
 ├── vista/
 │   ├── GamePanel.java
 │   ├── MenuPrincipal.java
@@ -95,7 +93,6 @@ src/
 │   ├── VentanaJuego.java
 │   ├── VentanaSeleccionarPiloto.java
 │   └── VentanaTopPuntajes.java
-│
 └── Main.java
 ```
 
@@ -105,6 +102,13 @@ Las librerías externas se encuentran en:
 lib/
 ├── jcommon-1.0.23.jar
 └── jfreechart-1.0.19.jar
+```
+
+El archivo JAR ejecutable se encuentra en:
+
+```text
+dist/
+└── Practica2.jar
 ```
 
 ---
@@ -429,7 +433,7 @@ Incluye:
 
 Después de generar el reporte, este se abre automáticamente en el navegador predeterminado.
 
-Los archivos generados se encuentran incluidos en `.gitignore`, debido a que son productos creados durante la ejecución del programa.
+Los archivos generados se encuentran listados en `.gitignore`, debido a que son productos creados durante la ejecución del programa y no forman parte permanente del código fuente.
 
 ---
 
