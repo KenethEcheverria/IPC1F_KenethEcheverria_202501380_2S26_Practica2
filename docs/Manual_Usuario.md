@@ -286,10 +286,6 @@ En este caso:
 - se cierra la ventana;
 - la partida abandonada no se registra como partida finalizada.
 
-### Ejemplo de Top de Puntajes e Historial
-
-![Top de Puntajes e Historial](imagenes/top_historial.png)
-
 ---
 
 ## 12. Top de Puntajes
@@ -326,6 +322,10 @@ Para cada partida se muestra:
 - nave;
 - puntaje;
 - fecha.
+
+### Ejemplo de Top de Puntajes e Historial
+
+![Top de Puntajes e Historial](imagenes/top_historial.png)
 
 ---
 
