@@ -25,6 +25,10 @@ Al iniciar el programa se muestra el menú principal con las siguientes opciones
 - `TOP DE PUNTAJES`
 - `SALIR`
 
+### Vista del menú principal
+
+![Menú principal](imagenes/menu_principal.png)
+
 ### Opciones
 
 **JUGAR:** permite seleccionar un piloto registrado e iniciar una partida.
@@ -67,6 +71,9 @@ Si el nombre ya existe aparecerá:
 ```text
 Ya existe un piloto con ese nombre.
 ```
+### Ejemplo de registro de piloto
+
+![Crear piloto](imagenes/crear_piloto.png)
 
 ---
 
@@ -130,6 +137,9 @@ Si todavía no existe ningún piloto registrado y se presiona `JUGAR`, el sistem
 ```text
 Debes crear un piloto antes de jugar.
 ```
+### Selección de piloto
+
+![Seleccionar piloto](imagenes/seleccionar_piloto.png)
 
 ---
 
@@ -260,6 +270,10 @@ Al presionar `OK`:
 3. se cierra la ventana del juego;
 4. el usuario vuelve al menú principal.
 
+### Ejemplo de fin de partida
+
+![Fin de partida](imagenes/fin_partida.png)
+
 ---
 
 ## 11. Cerrar una partida manualmente
@@ -271,6 +285,10 @@ En este caso:
 - se detienen los hilos de la partida;
 - se cierra la ventana;
 - la partida abandonada no se registra como partida finalizada.
+
+### Ejemplo de Top de Puntajes e Historial
+
+![Top de Puntajes e Historial](imagenes/top_historial.png)
 
 ---
 
@@ -343,6 +361,10 @@ Durante la exportación se generan:
 reporte_quetzal.html
 reporte_grafica.png
 ```
+
+### Ejemplo de reporte exportado
+
+![Reporte HTML exportado](imagenes/reporte_exportado.png)
 
 ---
 
